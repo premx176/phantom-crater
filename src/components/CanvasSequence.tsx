@@ -18,6 +18,25 @@ const CanvasSequence = () => {
   });
 
   const [imagesLoaded, setImagesLoaded] = useState(0);
+  const [canvasSize, setCanvasSize] = useState({ width: 0, height: 0 });
+
+  // Update canvas size on resize
+  useEffect(() => {
+    const updateSize = () => {
+      if (typeof window === "undefined") return;
+      
+      // Cap DPR at 2.0 to balance sharpness vs performance on mobile
+      const dpr = Math.min(window.devicePixelRatio || 1, 2);
+      setCanvasSize({
+        width: window.innerWidth * dpr,
+        height: window.innerHeight * dpr
+      });
+    };
+
+    updateSize();
+    window.addEventListener("resize", updateSize);
+    return () => window.removeEventListener("resize", updateSize);
+  }, []);
 
   // Preload Images
   useEffect(() => {
@@ -25,39 +44,39 @@ const CanvasSequence = () => {
     const images: HTMLImageElement[] = [];
     for (let i = 1; i <= FRAME_COUNT; i++) {
       const img = new Image();
-      // Pad zero to match format ezgif-frame-XXX.jpg
       const paddedIndex = i.toString().padStart(3, "0");
       img.src = `/sequence/ezgif-frame-${paddedIndex}.jpg`;
       img.onload = () => {
         loadedCount++;
         setImagesLoaded(loadedCount);
-        if (loadedCount === FRAME_COUNT && canvasRef.current) {
+        if (loadedCount === FRAME_COUNT && canvasSize.width > 0) {
           renderFrame(1);
         }
       };
       images.push(img);
     }
     imagesRef.current = images;
-  }, []);
+  }, [canvasSize.width]); // Re-trigger only if size was 0 initially
 
   const renderFrame = (index: number) => {
-    if (!canvasRef.current || imagesRef.current.length < FRAME_COUNT) return;
+    if (!canvasRef.current || imagesRef.current.length < FRAME_COUNT || canvasSize.width === 0) return;
     
-    // Boundary checks
     const i = Math.max(0, Math.min(index - 1, FRAME_COUNT - 1));
     const img = imagesRef.current[i];
     if (!img) return;
 
     const canvas = canvasRef.current;
-    const ctx = canvas.getContext("2d");
+    const ctx = canvas.getContext("2d", { alpha: false }); // Optimization: no alpha channel needed
     if (!ctx) return;
 
-    // Fixed internal resolution with Device Pixel Ratio for high-DPI displays
-    const dpr = window.devicePixelRatio || 1;
-    canvas.width = window.innerWidth * dpr;
-    canvas.height = window.innerHeight * dpr;
+    // Use current state size instead of recalculating on every frame
+    canvas.width = canvasSize.width;
+    canvas.height = canvasSize.height;
 
-    // calculate object-cover math
+    // High quality scaling
+    ctx.imageSmoothingEnabled = true;
+    ctx.imageSmoothingQuality = "high";
+
     const imgRatio = img.width / img.height;
     const canvasRatio = canvas.width / canvas.height;
     
@@ -75,8 +94,7 @@ const CanvasSequence = () => {
       offsetY = (canvas.height - drawHeight) / 2;
     }
     
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    // Dark bg to blend edges seamlessly if needed
+    // Draw background color first to avoid flickering
     ctx.fillStyle = "#050505";
     ctx.fillRect(0, 0, canvas.width, canvas.height);
     ctx.drawImage(img, offsetX, offsetY, drawWidth, drawHeight);
@@ -87,19 +105,14 @@ const CanvasSequence = () => {
     requestAnimationFrame(() => renderFrame(nextFrameIndex));
   });
 
-  // Handle Resize
+  // Re-render when size changes (e.g. orientation change)
   useEffect(() => {
-    const handleResize = () => {
-      // Re-render current frame on resize
-      if (scrollYProgress) {
-        const latest = scrollYProgress.get();
-        const frameIndex = Math.max(1, Math.min(FRAME_COUNT, Math.floor(latest * FRAME_COUNT) + 1));
-        renderFrame(frameIndex);
-      }
-    };
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
-  }, [scrollYProgress]);
+    if (imagesLoaded === FRAME_COUNT) {
+      const latest = scrollYProgress.get();
+      const frameIndex = Math.max(1, Math.min(FRAME_COUNT, Math.floor(latest * FRAME_COUNT) + 1));
+      renderFrame(frameIndex);
+    }
+  }, [canvasSize, imagesLoaded]);
 
   if (imagesLoaded < FRAME_COUNT) {
     return (
@@ -118,7 +131,8 @@ const CanvasSequence = () => {
   return (
     <canvas
       ref={canvasRef}
-      className="absolute inset-0 w-full h-full object-cover z-0 pointer-events-none"
+      className="absolute inset-0 w-full h-full object-cover z-0 pointer-events-none will-change-transform"
+      style={{ touchAction: "none" }}
     />
   );
 };
