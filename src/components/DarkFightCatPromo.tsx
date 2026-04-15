@@ -35,21 +35,21 @@ export function DarkFightCatPromo() {
   };
 
   return (
-    <section className="min-h-screen w-full flex items-center justify-center snap-center px-6 md:px-16 lg:px-32 relative overflow-hidden bg-transparent z-10 mb-[10vh]">
+    <section className="min-h-[80vh] w-full flex items-center justify-center px-6 md:px-16 lg:px-32 relative overflow-hidden bg-transparent z-10 py-20">
       <motion.div 
         variants={containerVariants}
         initial="hidden"
         whileInView="visible"
-        viewport={{ once: false, margin: "-20%" }}
-        className="max-w-7xl w-full grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24 items-center"
+        viewport={{ once: false, margin: "-10%" }}
+        className="max-w-5xl w-full grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center"
       >
         
-        {/* Left Side: Large Image with Glow */}
-        <motion.div variants={imageVariants} className="relative order-1">
+        {/* Left Side: Smaller Image with Glow */}
+        <motion.div variants={imageVariants} className="relative order-1 max-w-md mx-auto lg:mx-0">
           {/* Subtle Backglow */}
-          <div className="absolute inset-0 bg-white/10 blur-[80px] rounded-[3rem] animate-pulse" />
+          <div className="absolute inset-0 bg-white/10 blur-[60px] rounded-[3rem] animate-pulse" />
           
-          <div className="relative w-full aspect-square md:aspect-[4/5] rounded-[2rem] overflow-hidden shadow-neon-white border border-white/10 group">
+          <div className="relative w-full aspect-[4/5] rounded-[2rem] overflow-hidden shadow-neon-white border border-white/10 group">
             <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent z-10" />
             <img 
               src="https://perfectpowersolutions.com/Images/Uploaded_Images/23/1.jpg" 

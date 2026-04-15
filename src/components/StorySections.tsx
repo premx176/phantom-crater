@@ -5,12 +5,11 @@ import { DarkFightCatPromo } from "./DarkFightCatPromo";
 
 export function StorySections() {
   const sectionVariants: Variants = {
-    hidden: { opacity: 0, y: 40, filter: "blur(10px)" },
+    hidden: { opacity: 0, y: 40 },
     visible: { 
       opacity: 1, 
       y: 0, 
-      filter: "blur(0px)",
-      transition: { duration: 1.2, ease: [0.22, 1, 0.36, 1] }
+      transition: { duration: 1, ease: [0.22, 1, 0.36, 1] }
     }
   };
 
@@ -21,21 +20,21 @@ export function StorySections() {
   ];
 
   return (
-    <div className="relative z-10 w-full pb-[20vh]">
+    <div className="relative z-10 w-full pb-[10vh]">
       
       {/* 1. HERO */}
-      <section className="h-[150vh] flex flex-col justify-center items-center px-6 text-center snap-center">
+      <section className="min-h-[100vh] flex flex-col justify-center items-center px-6 text-center">
         <motion.div
           initial="hidden"
           whileInView="visible"
-          viewport={{ once: false, margin: "-20%" }}
+          viewport={{ once: false, margin: "-10%" }}
           variants={sectionVariants}
-          className="max-w-4xl pt-[20vh]"
+          className="max-w-4xl py-[20vh]"
         >
           <motion.h2 className="text-xs md:text-sm font-medium tracking-[0.3em] text-white uppercase mb-4 drop-shadow-[0_0_10px_rgba(255,255,255,1)]">
             MG Wheels
           </motion.h2>
-          <motion.h1 className="text-5xl md:text-6xl font-black tracking-tighter mb-6 leading-none bg-gradient-to-r from-white via-gray-300 to-white bg-clip-text text-transparent drop-shadow-[0_0_20px_rgba(255,255,255,0.4)]">
+          <motion.h1 className="text-5xl md:text-7xl font-black tracking-tighter mb-6 leading-none bg-gradient-to-r from-white via-gray-300 to-white bg-clip-text text-transparent drop-shadow-[0_0_20px_rgba(255,255,255,0.4)]">
             Pure Electric.<br/>Pure Power.
           </motion.h1>
           <motion.p className="text-xl text-white/80 font-light max-w-2xl mx-auto drop-shadow-md">
@@ -45,11 +44,11 @@ export function StorySections() {
       </section>
 
       {/* --- HIGHLIGHTS --- */}
-      <section className="h-[150vh] flex flex-col justify-center items-center px-6 text-center snap-center">
+      <section className="min-h-[100vh] flex flex-col justify-center items-center px-6 text-center py-20">
         <motion.div
           initial="hidden"
           whileInView="visible"
-          viewport={{ once: false, margin: "-20%" }}
+          viewport={{ once: false, margin: "-10%" }}
           variants={sectionVariants}
           className="max-w-5xl"
         >
@@ -80,7 +79,7 @@ export function StorySections() {
       <DarkFightCatPromo />
 
       {/* --- GALLERY SECTION --- */}
-      <section className="h-[150vh] flex flex-col justify-center items-center snap-center px-6 md:px-16 pb-32">
+      <section className="min-h-[100vh] flex flex-col justify-center items-center px-6 md:px-16 py-24">
         <motion.div
           initial="hidden"
           whileInView="visible"
@@ -105,7 +104,7 @@ export function StorySections() {
       </section>
 
       {/* --- HAPPY CUSTOMER SHOWCASE --- */}
-      <section className="relative w-full h-[60vh] md:h-[80vh] flex flex-col justify-center items-center snap-center overflow-hidden">
+      <section className="relative w-full h-[60vh] md:h-[80vh] flex flex-col justify-center items-center overflow-hidden">
         
         {/* Background Image with Zoom Effect */}
         <motion.div
