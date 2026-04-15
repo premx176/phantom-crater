@@ -12,9 +12,9 @@ export default function ContactPage() {
             <div className="absolute inset-0 bg-white/10 opacity-0 group-hover:opacity-100 transition-opacity" />
             <span className="text-3xl font-bold text-white tracking-widest relative z-10 drop-shadow-[0_0_10px_rgba(255,255,255,0.5)]">+91 8766891845</span>
           </a>
-          <a href="mailto:salespremsalve547@gmail.com" className="group relative overflow-hidden rounded-[2rem] bg-white/5 border border-white/20 p-8 shadow-neon-white hover:shadow-neon-white-hover transition-all flex items-center justify-center hover:-translate-y-2">
+          <a href="mailto:premsalve547@gmail.com" className="group relative overflow-hidden rounded-[2rem] bg-white/5 border border-white/20 p-8 shadow-neon-white hover:shadow-neon-white-hover transition-all flex items-center justify-center hover:-translate-y-2">
             <div className="absolute inset-0 bg-white/10 opacity-0 group-hover:opacity-100 transition-opacity" />
-            <span className="text-xl md:text-2xl font-light text-white tracking-wider relative z-10">salespremsalve547@gmail.com</span>
+            <span className="text-xl md:text-2xl font-light text-white tracking-wider relative z-10">premsalve547@gmail.com</span>
           </a>
         </div>
       </div>
